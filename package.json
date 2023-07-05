@@ -1,39 +1,51 @@
 {
-  "name": "Portfolio",
-  "version": "1.0.0",
-  "description": "A simple CAP project.",
-  "repository": "<Add your repository here>",
-  "license": "UNLICENSED",
-  "private": true,
-  "dependencies": {
-    "@sap/cds": "^6",
-    "express": "^4",
-    "hdb": "^0.19.0",
-    "@sap/xssec": "^3",
-    "passport": "^0"
-  },
-  "devDependencies": {
-    "sqlite3": "^5"
-  },
-  "scripts": {
-    "start": "cds-serve",
-    "h-deploy": "cds deploy --to hana:CAPHANA-dev"
-  },
-  "cds": {
-    "build": {
-      "tasks": [
-        {
-          "for": "hana",
-          "dest": "./db"
-        },
-        {
-          "for": "node-cf"
-        }
-      ]
+    "name": "Portfolio",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "^6",
+        "@sap/xssec": "^3",
+        "express": "^4",
+        "hdb": "^0.19.0",
+        "passport": "^0"
     },
-    "requires": {
-      "db": "hana-cloud",
-      "auth": "xsuaa"
-    }
-  }
+    "devDependencies": {
+        "@sap/eslint-plugin-ui5-jsdocs": "^2.0.5",
+        "@sap/ux-specification": "^1.108.8",
+        "@sapui5/ts-types": "^1.92.2",
+        "eslint": "^7.32.0",
+        "sqlite3": "^5",
+        "rimraf": "^3.0.2"
+    },
+    "scripts": {
+        "start": "cds-serve",
+        "h-deploy": "cds deploy --to hana:CAPHANA-dev",
+        "watch-fe-bookshop": "cds watch --open fe-bookshop/webapp/index.html?sap-ui-xx-viewCache=false",
+        "undeploy": "cf undeploy Portfolio --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1"
+    },
+    "cds": {
+        "build": {
+            "tasks": [
+                {
+                    "for": "hana",
+                    "dest": "./db"
+                },
+                {
+                    "for": "node-cf"
+                }
+            ]
+        },
+        "requires": {
+            "db": "hana-cloud",
+            "auth": "xsuaa"
+        }
+    },
+    "sapux": [
+        "app/fe-bookshop"
+    ]
 }
